@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Misskey-Now",
-    "version": "1.0",
-    "description": "#nowwatching",
+    "name": "Misskey Now",
+    "version": "0.1",
+    "description": "Misskeyで僕の見ている世界を共有しようかな❕❓",
     "content_scripts": [
         {
             "matches": [
