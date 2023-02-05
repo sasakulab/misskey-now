@@ -43,7 +43,7 @@ function generateText() {
     str = JSON.stringify(data);
     console.log(str)
     fetch(host), {
-        method: 'post',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
