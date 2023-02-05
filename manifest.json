@@ -1,0 +1,27 @@
+{
+    "manifest_version": 3,
+    "name": "Misskey-Now",
+    "version": "1.0",
+    "description": "#nowwatching",
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*",
+                "https://*/*"
+            ],
+            "js": ["main.js"]
+        }
+    ],
+    "permissions": ["tabs", "storage"],
+    "icons": {
+        "48": "assets/48x48.png",
+        "96": "assets/96x96.png"
+    },
+    "action": {
+        "default_popup": "main.html"
+    },
+    "host_permissions": [
+        "https://misskey.io/",
+        "https://mi.yude.moe/"
+    ]
+}
