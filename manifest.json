@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Misskey Now",
     "version": "0.1",
-    "description": "Misskeyで僕の見ている世界を共有しようかな❕❓",
+    "description": "「Misskeyで僕の見ている世界を共有しようかな❕❓」 Misskey Now は閲覧中のウェブサイトを Misskey インスタンスへ共有",
     "content_scripts": [
         {
             "matches": [
