@@ -42,13 +42,13 @@ function generateText() {
     };
     str = JSON.stringify(data);
     console.log(str)
-    fetch(host), {
+    fetch(host, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: str
-    }.then(response => response.text())
+    }).then(response => response.text())
     .then(data => {
             console.log(data);
         });
