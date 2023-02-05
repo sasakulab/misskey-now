@@ -2,14 +2,11 @@ chrome.storage.local.get().then((res00) => {
     console.log(res00);
 });
 
-chrome.storage.local.get(["instance"]).then((res01) => {
-    console.log("Restoring host:" + res01.key);
-    document.getElementById("settings_host").value = res01.key
-});
-
-chrome.storage.local.get(["key"]).then((res02) => {
-    console.log("Restoring API Key:" + res02.key);
-    document.getElementById("settings_api_key").value = res02.key
+chrome.storage.local.get(["instance", "key"]).then((results) => {
+    console.log("Restoring host:" + results.instance);
+    document.getElementById("settings_host").value = results.instance
+    console.log("Restoring API Key:" + results.key);
+    document.getElementById("settings_api_key").value = results.key
 });
 
 function getUrl(){
