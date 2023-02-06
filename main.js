@@ -15,8 +15,20 @@ function getUrl(){
 
 getUrl();
 
+function buttonstatus(mode){ // default, success, abort
+    if(mode == "default"){
+        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-primary";
+        document.querySelector(".btn-send").textContent = "Misskey Now!";
+    } else if (mode == "success") {
+        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-success";
+        document.querySelector(".btn-send").textContent = "Success";  
+    } else if (mode == "abort") {
+        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-danger";
+        document.querySelector(".btn-send").textContent = "Error";
+    }
+}
+
 function generateNote() {
-    var statusCode = 000
     const title = document.getElementById("popup_title").value
     const url =  document.getElementById("popup_url").value
     const range = document.getElementById("popup_range").value;
@@ -35,35 +47,29 @@ function generateNote() {
     str = JSON.stringify(data);
     console.log(str)
 
-    fetch(host, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: str
-    }).then(response =>{
-        statusCode = response.status
-        console.log(statusCode)
-        response.text()
-    })
-    .then(data => {
-            console.log(data);
+        fetch(host, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: str
+        }).then(response =>{
+            if (!response.ok) {
+                console.error('Misskey-now: Response Error!');
+                buttonstatus("abort")
+            } else {
+                console.error('Misskey-now: Send');
+                buttonstatus("success");
+            }
+            response.text()
+        })
+        .then(data => {
+                console.log(data);
+        })
+        .catch((error) => {
+            console.error('Misskey-now: Internal Error! : ' + error);
+            buttonstatus("abort");
     });
-    
-    if (statusCode == 200){
-        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-success";
-        document.querySelector(".btn-send").textContent = "Success";  
-        setTimeout(function(){},2000); // 一瞬待たせる関数の吟味
-        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-primary";
-        document.querySelector(".btn-send").textContent = "Misskey Now!";
-    } else {
-        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-danger";
-        document.querySelector(".btn-send").textContent = "Abort";
-        setTimeout(function(){},2000); // 一瞬待たせる関数の吟味
-        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-primary";
-        document.querySelector(".btn-send").textContent = "Misskey Now!";
-    }
-    
 }
 
 function saveSetting() {
