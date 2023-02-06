@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Misskey Now",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "「Misskeyで僕の見ている世界を共有しようかな❕❓」 Misskey Now は閲覧中のウェブサイトを Misskey インスタンスへ共有するだけの拡張機能です",
     "content_scripts": [
         {
@@ -21,7 +21,6 @@
         "default_popup": "main.html"
     },
     "host_permissions": [
-        "https://misskey.io/",
-        "https://mi.yude.moe/"
+        "*://*/*"
     ]
 }
