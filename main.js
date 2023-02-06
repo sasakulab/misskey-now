@@ -1,6 +1,8 @@
 chrome.storage.local.get(["instance", "key"]).then((results) => {
-    document.getElementById("settings_host").value = results.instance
-    document.getElementById("settings_api_key").value = results.key
+    if (typeof results.instance !== 'undefined'){
+        document.getElementById("settings_host").value = results.instance;
+        document.getElementById("settings_api_key").value = results.key;
+    };
 });
 
 function getUrl(){
