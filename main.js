@@ -88,4 +88,3 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector(".btn-send").addEventListener("click", generateNote);
     document.querySelector(".btn-save").addEventListener("click", saveSetting);
 });
-
