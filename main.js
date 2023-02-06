@@ -1,11 +1,5 @@
-chrome.storage.local.get().then((res00) => {
-    console.log(res00);
-});
-
 chrome.storage.local.get(["instance", "key"]).then((results) => {
-    console.log("Restoring host:" + results.instance);
     document.getElementById("settings_host").value = results.instance
-    console.log("Restoring API Key:" + results.key);
     document.getElementById("settings_api_key").value = results.key
 });
 
@@ -21,7 +15,8 @@ function getUrl(){
 
 getUrl();
 
-function generateText() {
+function generateNote() {
+    var statusCode = 000
     const title = document.getElementById("popup_title").value
     const url =  document.getElementById("popup_url").value
     const range = document.getElementById("popup_range").value;
@@ -39,16 +34,36 @@ function generateText() {
     };
     str = JSON.stringify(data);
     console.log(str)
+
     fetch(host, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: str
-    }).then(response => response.text())
+    }).then(response =>{
+        statusCode = response.status
+        console.log(statusCode)
+        response.text()
+    })
     .then(data => {
             console.log(data);
-        });
+    });
+    
+    if (statusCode == 200){
+        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-success";
+        document.querySelector(".btn-send").textContent = "Success";  
+        setTimeout(function(){},2000); // 一瞬待たせる関数の吟味
+        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-primary";
+        document.querySelector(".btn-send").textContent = "Misskey Now!";
+    } else {
+        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-danger";
+        document.querySelector(".btn-send").textContent = "Abort";
+        setTimeout(function(){},2000); // 一瞬待たせる関数の吟味
+        document.querySelector(".btn-send").className = "btn-sm w-100 btn-send btn-primary";
+        document.querySelector(".btn-send").textContent = "Misskey Now!";
+    }
+    
 }
 
 function saveSetting() {
@@ -59,11 +74,10 @@ function saveSetting() {
     chrome.storage.local.set(settings, function() {
         console.log('Misskey-Now: Stored Settings.');
     });
-    console.log(settings);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector(".btn-send").addEventListener("click", generateText);
+    document.querySelector(".btn-send").addEventListener("click", generateNote);
     document.querySelector(".btn-save").addEventListener("click", saveSetting);
 });
 
