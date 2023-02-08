@@ -13,7 +13,12 @@
 
 ## インストール
 
-パッケージ化を待ちます。
+以下の拡張機能プロバイダーから、お使いのブラウザにインストールしてください。
+
+- [Chrome ウェブストア](https://chrome.google.com/webstore/detail/misskey-now/gaanhijofgiahpbmjelcfhccepcgbekh)
+- [Firefox Browser ADD-ONS](https://addons.mozilla.org/ja/firefox/addon/misskey-now/)
+
+Microsoft Edge は、"Chrome ウェブストア" からサイドロードできます。
 
 ## 初期設定
 
@@ -38,3 +43,13 @@ Misskey-Now を表示し、
 ### 3. 完璧！
 
 ウェブページや動画を Misskey で共有しましょう！
+
+## 関連ページ
+
+[#nowwatching なウェブサイトを Misskey へ簡単に投稿する “Misskey Now” を開発しました](https://blog.sasakulab.com/tools/misskey-now)
+
+## Contributor
+
+この場を借りて厚く御礼申し上げます。
+
+- [@KusaReMKN](https://kusaremkn.com/)
