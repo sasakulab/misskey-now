@@ -27,6 +27,12 @@
         </div>
         <hr>
         <div class="input-group input-group-sm mb-2">
+            <span class="input-group-text">Profile</span>
+            <select class="form-select form-select-sm" id="popup_profile">
+                <option value="new">新しいプロファイル</option>
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-2">
             <span class="input-group-text">Range</span>
             <select class="form-select form-select-sm" id="popup_range">
                 <option selected value="public">Public</option>
@@ -60,6 +66,10 @@
               </h2>
               <div id="Settings" class="accordion-collapse collapse" aria-labelledby="headingSettings" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
+                    <div class="input-group input-group-sm mb-1">
+                        <span class="input-group-text">Profile Name</span>
+                        <input type="text" class="form-control" id="settings_profile_name">
+                    </div>
                     <div class="input-group input-group-sm mb-1">
                         <span class="input-group-text">Host</span>
                         <input type="text" class="form-control" id="settings_host">
