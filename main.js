@@ -81,6 +81,14 @@ function saveSetting() {
     };
     chrome.storage.local.set(settings, function() {
         console.log('Misskey-Now: Stored Settings.');
+        const prevText = save_settings.textContent;
+        const prevClass = save_settings.className;
+        save_settings.textContent = '✓';
+        save_settings.className = prevClass.replace('btn-primary', 'btn-success');
+        setTimeout(() => {
+            save_settings.textContent = prevText;
+            save_settings.className = prevClass;
+        }, 1500);
     });
 }
 
