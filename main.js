@@ -1,8 +1,12 @@
-chrome.storage.local.get(["instance", "key"]).then((results) => {
-    if (typeof results.instance !== 'undefined'){
+chrome.storage.local.get(["version", "profiles"]).then((results) => {
+    if (typeof results.version === 'undefined' | typeof results.profiles !== 'undefined' ){
+        document.getElementById("settings_host").value = results.instance;
+        document.getElementById("settings_api_key").value = results.key;
+    } else if (typeof results.instance !== 'undefined'){
         document.getElementById("settings_host").value = results.instance;
         document.getElementById("settings_api_key").value = results.key;
     };
+    console.log(results)
 });
 
 function getUrl(){
@@ -74,14 +78,20 @@ function generateNote() {
     });
 }
 
-function saveSetting() {
+function saveSetting(select) {
     settings = {
+        profile: document.getElementById("settings_profile_name").value,
         instance: document.getElementById("settings_host").value,
         key: document.getElementById("settings_api_key").value
     };
-    chrome.storage.local.set(settings, function() {
-        console.log('Misskey-Now: Stored Settings.');
-    });
+
+    if (select != 'new'){
+        chrome.storage.local.set(settings, function() {
+            console.log('Misskey-Now: Stored Settings.');
+        });
+    } else {
+        
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
