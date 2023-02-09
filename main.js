@@ -92,7 +92,13 @@ function saveSetting() {
     });
 }
 
+function handleCtrlEnter(e) {
+    if (e.ctrlKey && e.code === 'Enter')
+        document.querySelector(".btn-send")?.click();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelector(".btn-send").addEventListener("click", generateNote);
     document.querySelector(".btn-save").addEventListener("click", saveSetting);
+    popup_note.addEventListener('keydown', handleCtrlEnter);
 });
