@@ -1,10 +1,19 @@
+let manifestData = chrome.runtime.getManifest();
+
 chrome.storage.local.get(["version", "profiles"]).then((results) => {
-    if (typeof results.version === 'undefined' | typeof results.profiles !== 'undefined' ){
+    if (typeof results.version === 'undefined' | typeof results.profiles === 'undefined' ){ // 初回起動
+        init = {
+            version: manifestData.version,
+            profiles: []
+        };
+        chrome.storage.local.set(init, function() {
+            console.log('Misskey-Now: Initialize Settings (First Startup).');
+        });
+    } else if (typeof results.version == 'undefined' | typeof results.instance !== 'undefined'){ // バージョン情報がない -> データ構造更新
         document.getElementById("settings_host").value = results.instance;
         document.getElementById("settings_api_key").value = results.key;
-    } else if (typeof results.instance !== 'undefined'){
-        document.getElementById("settings_host").value = results.instance;
-        document.getElementById("settings_api_key").value = results.key;
+    } else { // version も登録され、profiles も保存済み -> 通常起動
+
     };
     console.log(results)
 });
