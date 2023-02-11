@@ -1,4 +1,4 @@
-let manifestData = chrome.runtime.getManifest();
+var manifestData = chrome.runtime.getManifest();
 var saveSettings = {};
 
 chrome.storage.local.get(['version', 'profiles']).then((results) => {
@@ -34,15 +34,13 @@ chrome.storage.local.get(['version', 'profiles']).then((results) => {
 });
 
 function getUrl() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         const url = tabs[0].url;
         const title = tabs[0].title;
         document.getElementById('popup_title').value = title;
         document.getElementById('popup_url').value = url;
     });
 }
-
-getUrl();
 
 function buttonstatus(mode) {
     // default, success, abort
@@ -109,21 +107,31 @@ function generateNote() {
 }
 
 function saveSetting(select) {
-    settings = {
-        profile: document.getElementById('settings_profile_name').value,
-        instance: document.getElementById('settings_host').value,
-        key: document.getElementById('settings_api_key').value,
+    profileName = document.getElementById("settings_profile_name").value;
+    instance = document.getElementById("settings_host").value;
+    key = document.getElementById("settings_api_key").value;
+    saveSettings[[profileName]] = {
+        instance: instance,
+        key: key,
     };
-
-    if (select != 'new') {
-        chrome.storage.local.set(settings, function () {
-            console.log('Misskey-Now: Stored Settings.');
-        });
-    } else {
+    settings = {
+        version: manifestData.version,
+        profiles: saveSettings
     }
+    chrome.storage.local.set(settings, function () {
+        console.log('Misskey-Now: Stored New Settings.');
+    });
+}
+
+
+
+function changeProfile(select) {
+    document
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
+    document.getElementById('popup_profile').addEventListener('', changeProfile);
+    window.addEventListener("load", getUrl);
 });
