@@ -2,9 +2,20 @@
 var manifestData = chrome.runtime.getManifest();
 var saveSettings = {}
 
-// 起動（設定データのアップデート → UI 初期化）
-function init(){
+// 移行処理（移行チェック）
+function ConvertValueableCheck(){
+    if (version === '0.2.0') {
+        console.log('Misskey Now: Settings have Already Updated!')
+    } else if (typeof instance === 'undefined'  && typeof key === 'undefined') {
+        console.log('Misskey Now: Thank you for installing Misskey Now! Initialize Configuration.')
+    // 空データ詰め込み;
+    } else {
+        console.log('Misskey Now: Thank you for Updating Misskey Now! Update your Configuration.')
+    // profiles['hogehoge'] = { instance, key };
+    }
 }
+
+// 動作変数設定
 
 function getUrl() {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
