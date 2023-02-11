@@ -3,53 +3,8 @@ var manifestData = chrome.runtime.getManifest();
 var saveSettings = {}
 
 // 起動（設定データのアップデート → UI 初期化）
-chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((results) => {
-    if (
-        (typeof results.version === 'undefined') |
-        (typeof results.profiles === 'undefined') |
-        (typeof results.instance === 'undefined')
-    ) {
-        saveSettings = {};
-        // 初回起動
-        console.log(
-            'Misskey Now: Thank you for installing! Initialize Settings.'
-        );
-        init = {
-            version: manifestData.version,
-            profiles: {},
-        };
-        chrome.storage.local.set(init, function () {
-            console.log('Misskey Now: Now Saving Settings (First Startup).');
-        });
-    } else if (
-        (typeof results.version == 'undefined') |
-        (typeof results.instance !== 'undefined')
-    ) {
-        // バージョン情報がない -> データ構造更新（アップデート）
-        console.log('Misskey Now: Thank you for Updating! Update Settings.');
-        saveSettings = {};
-        saveSettings["Updated Settings"] = {
-            instance: results.instance,
-            key: results.key,
-        };
-        settings = {
-            version: manifestData.version,
-            profiles: saveSettings
-        }
-        chrome.storage.local.remove("instance")
-        chrome.storage.local.remove("key")
-        chrome.storage.local.set(settings, function () {
-            console.log('Misskey Now: Updated.');
-        });
-    } else {
-        // version も登録され、profiles も保存済み -> 通常起動
-        saveSettings = results.profiles;
-        console.log('Misskey Now: Restore Settings.');
-    }
-    displayProfiles();
-    changeProfile();
-    console.log(results);
-});
+function init(){
+}
 
 function getUrl() {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
@@ -214,6 +169,7 @@ function handleCtrlEnter(e) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    init()
     getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
