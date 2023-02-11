@@ -1,6 +1,6 @@
 // 初期化
 var manifestData = chrome.runtime.getManifest();
-var saveSettings = {};
+var saveSettings = {}
 
 // 起動（設定データのアップデート → UI 初期化）
 chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((results) => {
@@ -9,6 +9,7 @@ chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((resul
         (typeof results.profiles === 'undefined') |
         (typeof results.instance === 'undefined')
     ) {
+        saveSettings = {};
         // 初回起動
         console.log(
             'Misskey Now: Thank you for installing! Initialize Settings.'
@@ -26,6 +27,7 @@ chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((resul
     ) {
         // バージョン情報がない -> データ構造更新（アップデート）
         console.log('Misskey Now: Thank you for Updating! Update Settings.');
+        saveSettings = {};
         saveSettings["Updated Settings"] = {
             instance: results.instance,
             key: results.key,
@@ -41,9 +43,9 @@ chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((resul
         });
     } else {
         // version も登録され、profiles も保存済み -> 通常起動
+        saveSettings = results.profiles;
         console.log('Misskey Now: Restore Settings.');
     }
-    saveSettings = results.profiles;
     displayProfiles();
     changeProfile();
     console.log(results);
@@ -139,6 +141,18 @@ function saveSetting() {
     }
     chrome.storage.local.set(settings, function () {
         console.log('Misskey-Now: Stored New Settings.');
+        const prevText = save_settings.textContent;
+        const prevClass = save_settings.className;
+        save_settings.textContent = '✓';
+        save_settings.className = prevClass.replace(
+            'btn-primary',
+            'btn-success'
+        );
+        setTimeout(() => {
+            save_settings.textContent = prevText;
+            save_settings.className = prevClass;
+        }, 1500);
+        displayProfiles()
     });
 }
 
@@ -183,16 +197,6 @@ function removeProfile() {
         settings_profile_name.value = '';
         settings_host.value = '';
         settings_api_key.value = '';
-        save_settings.textContent = '✓';
-        save_settings.className = prevClass.replace(
-            'btn-primary',
-            'btn-success'
-        );
-        setTimeout(() => {
-            save_settings.textContent = prevText;
-            save_settings.className = prevClass;
-        }, 1500);
-        displayProfiles()
     });
 }
 
