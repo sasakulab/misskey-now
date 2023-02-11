@@ -130,7 +130,6 @@ function changeProfile() {
         document.getElementById('settings_host').value = saveSettings[[selected]].instance;
         document.getElementById('settings_api_key').value = saveSettings[[selected]].key;
     }
-    
 }
 
 document.addEventListener('DOMContentLoaded', function() {
