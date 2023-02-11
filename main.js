@@ -5,8 +5,8 @@ var saveSettings = {}
 // 起動（設定データのアップデート → UI 初期化）
 chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((results) => {
     if (
-        (typeof results.version === 'undefined') |
-        (typeof results.profiles === 'undefined') |
+        (typeof results.version === 'undefined') ||
+        (typeof results.profiles === 'undefined') ||
         (typeof results.instance === 'undefined')
     ) {
         saveSettings = {};
@@ -22,7 +22,7 @@ chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((resul
             console.log('Misskey Now: Now Saving Settings (First Startup).');
         });
     } else if (
-        (typeof results.version == 'undefined') |
+        (typeof results.version == 'undefined') ||
         (typeof results.instance !== 'undefined')
     ) {
         // バージョン情報がない -> データ構造更新（アップデート）
