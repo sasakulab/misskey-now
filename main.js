@@ -23,8 +23,8 @@ chrome.storage.local.get(['version', 'profiles']).then((results) => {
     ) {
         // バージョン情報がない -> データ構造更新
         console.log('Misskey Now: Thank you for Updating! Update Settings.');
-        document.getElementById('settings_host').value = results.instance;
-        document.getElementById('settings_api_key').value = results.key;
+        settings_host.value = results.instance;
+        settings_api_key.value = results.key;
     } else {
         // version も登録され、profiles も保存済み -> 通常起動
         console.log('Misskey Now: Restore Settings.');
@@ -37,8 +37,8 @@ function getUrl() {
     chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
         const url = tabs[0].url;
         const title = tabs[0].title;
-        document.getElementById('popup_title').value = title;
-        document.getElementById('popup_url').value = url;
+        popup_title.value = title;
+        popup_url.value = url;
     });
 }
 
@@ -60,16 +60,16 @@ function buttonstatus(mode) {
 }
 
 function generateNote() {
-    const title = document.getElementById('popup_title').value;
-    const url = document.getElementById('popup_url').value;
-    const range = document.getElementById('popup_range').value;
-    const hash = document.getElementById('popup_hash').value;
-    const note = document.getElementById('popup_note').value;
+    const title = popup_title.value;
+    const url = popup_url.value;
+    const range = popup_range.value;
+    const hash = popup_hash.value;
+    const note = popup_note.value;
     const host =
         'https://' +
-        document.getElementById('settings_host').value +
+        settings_host.value +
         '/api/notes/create';
-    const apiKey = document.getElementById('settings_api_key').value;
+    const apiKey = settings_api_key.value;
     strings = note + '\n\n' + '『' + title + '』 - ' + url + ' ' + hash;
     console.log(strings);
     let data = {
@@ -107,9 +107,9 @@ function generateNote() {
 }
 
 function saveSetting(select) {
-    profileName = document.getElementById("settings_profile_name").value;
-    instance = document.getElementById("settings_host").value;
-    key = document.getElementById("settings_api_key").value;
+    profileName = settings_profile_name.value;
+    instance = settings_host.value;
+    key = settings_api_key.value;
     saveSettings[[profileName]] = {
         instance: instance,
         key: key,
@@ -124,11 +124,11 @@ function saveSetting(select) {
 }
 
 function changeProfile() {
-    var selected = document.getElementById('popup_profile').value
+    var selected = popup_profile.value
     if(selected !== 'new'){
-        document.getElementById('settings_profile_name').value = selected;
-        document.getElementById('settings_host').value = saveSettings[[selected]].instance;
-        document.getElementById('settings_api_key').value = saveSettings[[selected]].key;
+        settings_profile_name.value = selected;
+        settings_host.value = saveSettings[[selected]].instance;
+        settings_api_key.value = saveSettings[[selected]].key;
     }
 }
 
@@ -136,5 +136,5 @@ document.addEventListener('DOMContentLoaded', function() {
     getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
-    document.getElementById('popup_profile').addEventListener('change', changeProfile);
+    popup_profile.addEventListener('change', changeProfile);
 });
