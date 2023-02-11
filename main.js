@@ -1,7 +1,7 @@
 chrome.storage.local.get(['instance', 'key']).then((results) => {
     if (typeof results.instance !== 'undefined') {
-        document.getElementById('settings_host').value = results.instance;
-        document.getElementById('settings_api_key').value = results.key;
+        settings_host.value = results.instance;
+        settings_api_key.value = results.key;
     }
 });
 
@@ -9,8 +9,8 @@ function getUrl() {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         const url = tabs[0].url;
         const title = tabs[0].title;
-        document.getElementById('popup_title').value = title;
-        document.getElementById('popup_url').value = url;
+        popup_title.value = title;
+        popup_url.value = url;
     });
 }
 
@@ -34,16 +34,16 @@ function buttonstatus(mode) {
 }
 
 function generateNote() {
-    const title = document.getElementById('popup_title').value;
-    const url = document.getElementById('popup_url').value;
-    const range = document.getElementById('popup_range').value;
-    const hash = document.getElementById('popup_hash').value;
-    const note = document.getElementById('popup_note').value;
+    const title = popup_title.value;
+    const url = popup_url.value;
+    const range = popup_range.value;
+    const hash = popup_hash.value;
+    const note = popup_note.value;
     const host =
         'https://' +
-        document.getElementById('settings_host').value +
+        settings_host.value +
         '/api/notes/create';
-    const apiKey = document.getElementById('settings_api_key').value;
+    const apiKey = settings_api_key.value;
     strings = note + '\n\n' + '『' + title + '』 - ' + url + ' ' + hash;
     console.log(strings);
     let data = {
@@ -82,8 +82,8 @@ function generateNote() {
 
 function saveSetting() {
     settings = {
-        instance: document.getElementById('settings_host').value,
-        key: document.getElementById('settings_api_key').value,
+        instance: settings_host.value,
+        key: settings_api_key.value,
     };
     chrome.storage.local.set(settings, function () {
         console.log('Misskey-Now: Stored Settings.');
