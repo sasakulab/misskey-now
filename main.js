@@ -183,6 +183,15 @@ function removeProfile() {
         settings_profile_name.value = '';
         settings_host.value = '';
         settings_api_key.value = '';
+        save_settings.textContent = '✓';
+        save_settings.className = prevClass.replace(
+            'btn-primary',
+            'btn-success'
+        );
+        setTimeout(() => {
+            save_settings.textContent = prevText;
+            save_settings.className = prevClass;
+        }, 1500);
         displayProfiles()
     });
 }
@@ -193,6 +202,11 @@ function removeChildren(x) {
             x.removeChild(x.firstChild);
         }
     }
+}
+
+function handleCtrlEnter(e) {
+    if (e.ctrlKey && e.code === 'Enter')
+        document.querySelector('.btn-send')?.click();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
