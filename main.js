@@ -6,7 +6,8 @@ var saveSettings = {};
 chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((results) => {
     if (
         (typeof results.version === 'undefined') |
-        (typeof results.profiles === 'undefined')
+        (typeof results.profiles === 'undefined') |
+        (typeof results.instance === 'undefined')
     ) {
         // 初回起動
         console.log(
@@ -33,8 +34,10 @@ chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((resul
             version: manifestData.version,
             profiles: saveSettings
         }
+        chrome.storage.local.remove("instance")
+        chrome.storage.local.remove("key")
         chrome.storage.local.set(settings, function () {
-            console.log('Misskey-Now: Stored New Settings.');
+            console.log('Misskey Now: Updated.');
         });
     } else {
         // version も登録され、profiles も保存済み -> 通常起動
