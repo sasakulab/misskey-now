@@ -3,7 +3,7 @@ var manifestData = chrome.runtime.getManifest();
 var saveSettings = {}
 
 // 移行処理（移行チェック）
-function ConvertValueableCheck(){
+function ConvertVariableCheck(){
     if (version === '0.2.0') {
         console.log('Misskey Now: Settings have Already Updated!')
     } else if (typeof instance === 'undefined' && typeof key === 'undefined') {
