@@ -56,6 +56,7 @@ function reloadSaveData(){
     });
 }
 
+// タブから URL, タイトルの取得
 function getUrl() {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         const url = tabs[0].url;
@@ -65,6 +66,7 @@ function getUrl() {
     });
 }
 
+// ボタンのステータス変更 (@KusaReMKN さんのコードに統一予定（関数化）)
 function buttonstatus(mode) {
     // default, success, abort
     if (mode == 'default') {
@@ -82,6 +84,7 @@ function buttonstatus(mode) {
     }
 }
 
+// ノートの作成・送信
 function generateNote() {
     const title = popup_title.value;
     const url = popup_url.value;
@@ -126,6 +129,7 @@ function generateNote() {
         });
 }
 
+// 設定の保存
 function saveSetting() {
     profileName = settings_profile_name.value;
     if (popup_profile.value !== 'new') {
@@ -158,6 +162,7 @@ function saveSetting() {
     });
 }
 
+// プロファイルの選択肢を変更したときに、下部（設定）の表示を更新
 function changeProfile() {
     var selected = popup_profile.value;
     if (selected !== 'new') {
@@ -171,6 +176,7 @@ function changeProfile() {
     }
 }
 
+// プロファイルの選択肢の更新
 function displayProfiles() {
     removeChildren(popup_profile);
     const option = document.createElement('option');
@@ -185,6 +191,7 @@ function displayProfiles() {
     });
 }
 
+// プロファイルの削除
 function removeProfile() {
     if (popup_profile.value !== 'new') {
         console.log('debug');
@@ -202,6 +209,7 @@ function removeProfile() {
     });
 }
 
+// 子要素の削除
 function removeChildren(x) {
     if (x.hasChildNodes()) {
         while (x.childNodes.length > 0) {
@@ -210,11 +218,13 @@ function removeChildren(x) {
     }
 }
 
+// Ctrl + Enter で送信
 function handleCtrlEnter(e) {
     if (e.ctrlKey && e.code === 'Enter')
         document.querySelector('.btn-send')?.click();
 }
 
+// イベントリスナーの動作
 document.addEventListener('DOMContentLoaded', function () {
     getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
