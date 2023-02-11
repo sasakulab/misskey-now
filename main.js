@@ -1,7 +1,9 @@
+// 初期化
 var manifestData = chrome.runtime.getManifest();
 var saveSettings = {};
 
-chrome.storage.local.get(['version', 'profiles']).then((results) => {
+// 起動（設定データのアップデート → UI 初期化）
+chrome.storage.local.get(['version', 'profiles', 'instance', 'key']).then((results) => {
     if (
         (typeof results.version === 'undefined') |
         (typeof results.profiles === 'undefined')
@@ -15,22 +17,33 @@ chrome.storage.local.get(['version', 'profiles']).then((results) => {
             profiles: {},
         };
         chrome.storage.local.set(init, function () {
-            console.log('Misskey-Now: Now Saving Settings (First Startup).');
+            console.log('Misskey Now: Now Saving Settings (First Startup).');
         });
     } else if (
         (typeof results.version == 'undefined') |
         (typeof results.instance !== 'undefined')
     ) {
-        // バージョン情報がない -> データ構造更新
+        // バージョン情報がない -> データ構造更新（アップデート）
         console.log('Misskey Now: Thank you for Updating! Update Settings.');
-        settings_host.value = results.instance;
-        settings_api_key.value = results.key;
+        saveSettings["Updated Settings"] = {
+            instance: results.instance,
+            key: results.key,
+        };
+        settings = {
+            version: manifestData.version,
+            profiles: saveSettings
+        }
+        chrome.storage.local.set(settings, function () {
+            console.log('Misskey-Now: Stored New Settings.');
+        });
     } else {
         // version も登録され、profiles も保存済み -> 通常起動
         console.log('Misskey Now: Restore Settings.');
     }
     saveSettings = results.profiles;
-    console.log('Misskey Now (Debug):' + results);
+    displayProfiles();
+    changeProfile();
+    console.log(results);
 });
 
 function getUrl() {
@@ -106,8 +119,11 @@ function generateNote() {
         });
 }
 
-function saveSetting(select) {
+function saveSetting() {
     profileName = settings_profile_name.value;
+    if (popup_profile.value !== 'new') {
+        delete saveSettings[[popup_profile.value]]
+    }
     instance = settings_host.value;
     key = settings_api_key.value;
     saveSettings[[profileName]] = {
@@ -129,6 +145,50 @@ function changeProfile() {
         settings_profile_name.value = selected;
         settings_host.value = saveSettings[[selected]].instance;
         settings_api_key.value = saveSettings[[selected]].key;
+    } else {
+        settings_profile_name.value = '';
+        settings_host.value = '';
+        settings_api_key.value = '';
+    }
+}
+
+function displayProfiles() {
+    removeChildren(popup_profile)
+    const option = document.createElement('option');
+    option.textContent = "New Profile"
+    option.value = "new"
+    popup_profile.appendChild(option)
+    Object.keys(saveSettings).forEach(profile => {
+        const option = document.createElement('option');
+        option.textContent = profile;
+        option.value = profile;
+        popup_profile.appendChild(option);
+    })
+}
+
+function removeProfile() {
+    if (popup_profile.value !== 'new') {
+        console.log('debug')
+        delete saveSettings[[popup_profile.value]]
+    }
+    settings = {
+        version: manifestData.version,
+        profiles: saveSettings
+    }
+    chrome.storage.local.set(settings, function () {
+        console.log('Misskey-Now: Stored New Settings.');
+        settings_profile_name.value = '';
+        settings_host.value = '';
+        settings_api_key.value = '';
+        displayProfiles()
+    });
+}
+
+function removeChildren(x) {
+    if (x.hasChildNodes()) {
+        while (x.childNodes.length > 0) {
+            x.removeChild(x.firstChild);
+        }
     }
 }
 
@@ -136,5 +196,6 @@ document.addEventListener('DOMContentLoaded', function() {
     getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
+    document.querySelector('.btn-delete').addEventListener('click', removeProfile);
     popup_profile.addEventListener('change', changeProfile);
 });
