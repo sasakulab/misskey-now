@@ -39,10 +39,7 @@ function generateNote() {
     const range = popup_range.value;
     const hash = popup_hash.value;
     const note = popup_note.value;
-    const host =
-        'https://' +
-        settings_host.value +
-        '/api/notes/create';
+    const host = (new URL('api/notes/create', settings_host.value)).toString();
     const apiKey = settings_api_key.value;
     strings = note + '\n\n' + '『' + title + '』 - ' + url + ' ' + hash;
     console.log(strings);
