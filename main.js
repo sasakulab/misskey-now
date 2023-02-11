@@ -6,12 +6,28 @@ var saveSettings = {}
 function ConvertValueableCheck(){
     if (version === '0.2.0') {
         console.log('Misskey Now: Settings have Already Updated!')
-    } else if (typeof instance === 'undefined'  && typeof key === 'undefined') {
+    } else if (typeof instance === 'undefined' && typeof key === 'undefined') {
         console.log('Misskey Now: Thank you for installing Misskey Now! Initialize Configuration.')
-    // 空データ詰め込み;
+        init = {
+            version: manifestData.version,
+            profiles: {},
+        };
+        chrome.storage.local.set(init, function () {
+            console.log('Misskey Now: Saving Settings (First Startup).');
+        });
     } else {
-        console.log('Misskey Now: Thank you for Updating Misskey Now! Update your Configuration.')
-    // profiles['hogehoge'] = { instance, key };
+        console.log('Misskey Now: Thank you for Updating Misskey Now! Replace your Configuration.')
+        chrome.storage.local.get(['instance', 'key']).then((results) => {
+            saveSettings = {}
+            saveSettings['PreviousVersionData'] = {
+                instance: results.instance,
+                key: results.key
+            };
+            settings = {
+                version: manifestData.version,
+                profiles: saveSettings
+            }
+        });
     }
 }
 
