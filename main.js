@@ -49,6 +49,12 @@ function ConvertVariableCheck() {
 }
 
 // 動作変数設定
+function reloadSaveData(){
+    chrome.storage.local.get(['profiles']).then((results) => {
+        saveSettings = results.profiles
+        console.log("Misskey Now: Read Profiles Successfully")
+    });
+}
 
 function getUrl() {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
