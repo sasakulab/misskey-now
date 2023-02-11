@@ -123,15 +123,19 @@ function saveSetting(select) {
     });
 }
 
-
-
-function changeProfile(select) {
-    document
+function changeProfile() {
+    var selected = document.getElementById('popup_profile').value
+    if(selected !== 'new'){
+        document.getElementById('settings_profile_name').value = selected;
+        document.getElementById('settings_host').value = saveSettings[[selected]].instance;
+        document.getElementById('settings_api_key').value = saveSettings[[selected]].key;
+    }
+    
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
+    getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
-    document.getElementById('popup_profile').addEventListener('', changeProfile);
-    window.addEventListener("load", getUrl);
+    document.getElementById('popup_profile').addEventListener('change', changeProfile);
 });
