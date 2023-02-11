@@ -196,7 +196,6 @@ function handleCtrlEnter(e) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    init()
     getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
