@@ -5,8 +5,9 @@ version_footer.textContent = manifestData.version;
 
 // 移行処理（移行チェック）
 async function ConvertVariableCheck() {
-    chrome.storage.local.get(['version', 'instance', 'key']).then((results) => {
-        (version = results.version),
+    await chrome.storage.local.get(['version', 'instance', 'key']).then((results) => {
+            console.log(results)
+            (version = results.version),
             (instance = results.instance),
             (key = results.key);
 
@@ -52,7 +53,7 @@ async function ConvertVariableCheck() {
 
 // 動作変数設定
 async function reloadSaveData() {
-    chrome.storage.local.get(['profiles', 'version']).then((results) => {
+    await chrome.storage.local.get(['profiles', 'version']).then((results) => {
         saveSettings = results.profiles;
         console.log('Misskey Now: Read Profiles Successfully');
     });
