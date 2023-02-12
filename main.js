@@ -4,68 +4,60 @@ var saveSettings = {};
 version_footer.textContent = manifestData.version;
 
 // 移行処理（移行チェック）
-function ConvertVariableCheck() {
-    chrome.storage.local.get(['version', 'instance', 'key']).then((results) => {
-        (version = results.version),
-            (instance = results.instance),
-            (key = results.key);
+async function ConvertVariableCheck() {
+    const results = await chrome.storage.local.get([
+        'version',
+        'instance',
+        'key',
+    ]);
+    const { version, instance, key } = results;
 
-        if (version == '0.2.0') {
-            console.log('Misskey Now: Settings have Already Updated!');
-            displayProfiles();
-        } else if (
-            typeof instance === 'undefined' &&
-            typeof key === 'undefined'
-        ) {
-            console.log(
-                'Misskey Now: Thank you for installing Misskey Now! Initialize Configuration.'
-            );
-            init = {
-                version: manifestData.version,
-                profiles: {},
-            };
-            chrome.storage.local.set(init, function () {
-                console.log('Misskey Now: Saving Settings (First Startup).');
-            });
-        } else {
-            console.log(
-                'Misskey Now: Thank you for Updating Misskey Now! Replace your Configuration.'
-            );
-            chrome.storage.local.get(['instance', 'key']).then((results) => {
-                saveSettings = {};
-                saveSettings['PreviousVersionData'] = {
-                    instance: results.instance,
-                    key: results.key,
-                };
-                return (settings = {
-                    version: manifestData.version,
-                    profiles: saveSettings,
-                });
-            }).then((settings) => {
-                chrome.storage.local.set(settings, function () {
-                    console.log('Misskey Now: Saving Settings (Replaced).');
-                });
-            });
-        }
-    });
+    if (version == '0.2.0') {
+        console.log('Misskey Now: Settings have Already Updated!');
+        displayProfiles();
+    } else if (typeof instance === 'undefined' && typeof key === 'undefined') {
+        console.log(
+            'Misskey Now: Thank you for installing Misskey Now! Initialize Configuration.'
+        );
+        const init = {
+            version: manifestData.version,
+            profiles: {},
+        };
+        await chrome.storage.local.set(init);
+        console.log('Misskey Now: Saving Settings (First Startup).');
+    } else {
+        console.log(
+            'Misskey Now: Thank you for Updating Misskey Now! Replace your Configuration.'
+        );
+        const results = await chrome.storage.local.get(['instance', 'key']);
+        saveSettings = {};
+        saveSettings['PreviousVersionData'] = {
+            instance: results.instance,
+            key: results.key,
+        };
+        const settings = {
+            version: manifestData.version,
+            profiles: saveSettings,
+        };
+        await chrome.storage.local.set(settings);
+        console.log('Misskey Now: Saving Settings (Replaced).');
+    }
 }
 
 // 動作変数設定
-function reloadSaveData() {
-    chrome.storage.local.get(['profiles']).then((results) => {
-        saveSettings = results.profiles;
-        console.log('Misskey Now: Read Profiles Successfully');
-    });
+async function reloadSaveData() {
+    const results = await chrome.storage.local.get(['profiles']);
+    saveSettings = results.profiles;
+    console.log('Misskey Now: Read Profiles Successfully');
 }
 
 // タブから URL, タイトルの取得
-function getUrl() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        const url = tabs[0].url;
-        const title = tabs[0].title;
-        popup_title.value = title;
-        popup_url.value = url;
-    });
+async function getUrl() {
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+    const url = tabs[0].url;
+    const title = tabs[0].title;
+    popup_title.value = title;
+    popup_url.value = url;
 }
 
 // ボタンのステータス変更 (@KusaReMKN さんのコードに統一予定（関数化）)
@@ -87,7 +79,7 @@ function buttonstatus(mode) {
 }
 
 // ノートの作成・送信
-function generateNote() {
+async function generateNote() {
     const title = popup_title.value;
     const url = popup_url.value;
     const range = popup_range.value;
@@ -103,36 +95,31 @@ function generateNote() {
         text: strings,
     };
     str = JSON.stringify(data);
-    console.log(str);
-
-    fetch(host, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: str,
-    })
-        .then((response) => {
-            if (!response.ok) {
-                console.error('Misskey-now: Response Error!');
-                buttonstatus('abort');
-            } else {
-                console.error('Misskey-now: Send');
-                buttonstatus('success');
-            }
-            response.text();
-        })
-        .then((data) => {
-            console.log(data);
-        })
-        .catch((error) => {
-            console.error('Misskey-now: Internal Error! : ' + error);
-            buttonstatus('abort');
+    try {
+        const response = await fetch(host, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: str,
         });
+        if (!response.ok) {
+            console.error('Misskey-now: Response Error!');
+            buttonstatus('abort');
+        } else {
+            console.log('Misskey-now: Send');
+            buttonstatus('success');
+        }
+        response.text();
+        console.log(data);
+    } catch (e) {
+        console.error('Misskey-now: Internal Error! : ' + e);
+        buttonstatus('abort');
+    }
 }
 
 // 設定の保存
-function saveSetting() {
+async function saveSetting() {
     profileName = settings_profile_name.value;
     if (popup_profile.value !== 'new') {
         delete saveSettings[[popup_profile.value]];
@@ -147,21 +134,17 @@ function saveSetting() {
         version: manifestData.version,
         profiles: saveSettings,
     };
-    chrome.storage.local.set(settings, function () {
-        console.log('Misskey-Now: Stored New Settings.');
-        const prevText = save_settings.textContent;
-        const prevClass = save_settings.className;
-        save_settings.textContent = '✓';
-        save_settings.className = prevClass.replace(
-            'btn-primary',
-            'btn-success'
-        );
-        setTimeout(() => {
-            save_settings.textContent = prevText;
-            save_settings.className = prevClass;
-        }, 1500);
-        displayProfiles();
-    });
+    await chrome.storage.local.set(settings);
+    console.log('Misskey-Now: Stored New Settings.');
+    const prevText = save_settings.textContent;
+    const prevClass = save_settings.className;
+    save_settings.textContent = '✓';
+    save_settings.className = prevClass.replace('btn-primary', 'btn-success');
+    setTimeout(() => {
+        save_settings.textContent = prevText;
+        save_settings.className = prevClass;
+    }, 1500);
+    displayProfiles();
 }
 
 // プロファイルの選択肢を変更したときに、下部（設定）の表示を更新
@@ -195,7 +178,7 @@ function displayProfiles() {
 }
 
 // プロファイルの削除
-function removeProfile() {
+async function removeProfile() {
     if (popup_profile.value !== 'new') {
         console.log('debug');
         delete saveSettings[[popup_profile.value]];
@@ -204,12 +187,11 @@ function removeProfile() {
         version: manifestData.version,
         profiles: saveSettings,
     };
-    chrome.storage.local.set(settings, function () {
-        console.log('Misskey-Now: Stored New Settings.');
-        settings_profile_name.value = '';
-        settings_host.value = '';
-        settings_api_key.value = '';
-    });
+    await chrome.storage.local.set(settings);
+    console.log('Misskey-Now: Stored New Settings.');
+    settings_profile_name.value = '';
+    settings_host.value = '';
+    settings_api_key.value = '';
 }
 
 // 子要素の削除
@@ -227,16 +209,21 @@ function handleCtrlEnter(e) {
         document.querySelector('.btn-send')?.click();
 }
 
-reloadSaveData();
-ConvertVariableCheck();
+async function reloadInternalProfiles() {
+    await ConvertVariableCheck();
+    await reloadSaveData();
+    displayProfiles();
+}
 
 // イベントリスナーの動作
-document.addEventListener('DOMContentLoaded', function () {
-    getUrl();
+document.addEventListener('DOMContentLoaded', async function () {
+    await reloadInternalProfiles();
+    await getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
     document
         .querySelector('.btn-delete')
         .addEventListener('click', removeProfile);
     popup_profile.addEventListener('change', changeProfile);
+    popup_note.addEventListener('keydown', handleCtrlEnter);
 });
