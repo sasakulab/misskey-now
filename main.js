@@ -43,7 +43,6 @@ async function ConvertVariableCheck() {
 // 動作変数設定
 async function reloadSaveData() {
     const results = await chrome.storage.local.get(['profiles']);
-    const { profiles } = results;
     saveSettings = results.profiles;
     console.log('Misskey Now: Read Profiles Successfully');
 }
