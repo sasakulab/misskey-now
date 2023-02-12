@@ -214,11 +214,11 @@ async function reloadInternalProfiles(){
     displayProfiles();
 }
 
-reloadInternalProfiles()
 
 // イベントリスナーの動作
-document.addEventListener('DOMContentLoaded', function () {
-    getUrl();
+document.addEventListener('DOMContentLoaded', async function () {
+    await reloadInternalProfiles()
+    await getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
     document
