@@ -1,7 +1,6 @@
 // 初期化
 var manifestData = chrome.runtime.getManifest();
 var saveSettings = {};
-ConvertVariableCheck();
 
 // 移行処理（移行チェック）
 function ConvertVariableCheck() {
@@ -12,6 +11,7 @@ function ConvertVariableCheck() {
 
         if (version == '0.2.0') {
             console.log('Misskey Now: Settings have Already Updated!');
+            displayProfiles();
         } else if (
             typeof instance === 'undefined' &&
             typeof key === 'undefined'
@@ -178,6 +178,7 @@ function changeProfile() {
 
 // プロファイルの選択肢の更新
 function displayProfiles() {
+    const popup_profile = document.getElementById('popup_profile');
     removeChildren(popup_profile);
     const option = document.createElement('option');
     option.textContent = 'New Profile';
@@ -223,6 +224,9 @@ function handleCtrlEnter(e) {
     if (e.ctrlKey && e.code === 'Enter')
         document.querySelector('.btn-send')?.click();
 }
+
+reloadSaveData();
+ConvertVariableCheck();
 
 // イベントリスナーの動作
 document.addEventListener('DOMContentLoaded', function () {
