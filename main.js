@@ -42,10 +42,10 @@ async function ConvertVariableCheck() {
 
 // 動作変数設定
 async function reloadSaveData() {
-    await chrome.storage.local.get(['profiles', 'version']).then((results) => {
-        saveSettings = results.profiles;
-        console.log('Misskey Now: Read Profiles Successfully');
-    });
+    const results = await chrome.storage.local.get(['profiles']);
+    const { profiles } = results;
+    saveSettings = results.profiles;
+    console.log('Misskey Now: Read Profiles Successfully');
 }
 
 // タブから URL, タイトルの取得
