@@ -12,7 +12,7 @@ async function ConvertVariableCheck() {
         console.log('Misskey Now: Settings have Already Updated!');
         displayProfiles();
     } else if (typeof instance === 'undefined' && typeof key === 'undefined') {
-        consoe.log(
+        console.log(
             'Misskey Now: Thank you for installing Misskey Now! Initialize Configuration.'
         );
         const init = {
