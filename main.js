@@ -37,13 +37,14 @@ function ConvertVariableCheck() {
                     instance: results.instance,
                     key: results.key,
                 };
-                settings = {
+                return (settings = {
                     version: manifestData.version,
                     profiles: saveSettings,
-                };
-            });
-            chrome.storage.local.set(settings, function () {
-                console.log('Misskey Now: Saving Settings (Replaced).');
+                });
+            }).then((settings) => {
+                chrome.storage.local.set(settings, function () {
+                    console.log('Misskey Now: Saving Settings (Replaced).');
+                });
             });
         }
     });
