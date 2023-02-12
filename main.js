@@ -77,7 +77,7 @@ function buttonstatus(mode) {
 }
 
 // ノートの作成・送信
-function generateNote() {
+async function generateNote() {
     const title = popup_title.value;
     const url = popup_url.value;
     const range = popup_range.value;
@@ -92,33 +92,30 @@ function generateNote() {
         visibility: range,
         text: strings,
     };
-    str = JSON.stringify(data);
-    console.log(str);
-
-    fetch(host, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: str,
-    })
-        .then((response) => {
+    str = JSON.stringify(data);   
+    (async function() {
+        try {
+            const response = await fetch(host, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: str,
+            });
             if (!response.ok) {
                 console.error('Misskey-now: Response Error!');
                 buttonstatus('abort');
             } else {
-                console.error('Misskey-now: Send');
+                console.log('Misskey-now: Send');
                 buttonstatus('success');
             }
             response.text();
-        })
-        .then((data) => {
             console.log(data);
-        })
-        .catch((error) => {
-            console.error('Misskey-now: Internal Error! : ' + error);
+        } catch (e) {
+            console.error('Misskey-now: Internal Error! : ' + e);
             buttonstatus('abort');
-        });
+        }
+    })();
 }
 
 // 設定の保存
