@@ -24,7 +24,7 @@ async function ConvertVariableCheck() {
                 version: manifestData.version,
                 profiles: {},
             };
-            chrome.storage.local.set(init, function () {
+            await chrome.storage.local.set(init, function () {
                 console.log('Misskey Now: Saving Settings (First Startup).');
             });
         } else {
