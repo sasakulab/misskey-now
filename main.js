@@ -175,6 +175,9 @@ function displayProfiles() {
         option.value = profile;
         popup_profile.appendChild(option);
     });
+    if(typeof popup_profile.options[1] !== 'undefined'){
+        popup_profile.options[1].setAttribute("selected", "selected")
+    }
 }
 
 // プロファイルの削除
