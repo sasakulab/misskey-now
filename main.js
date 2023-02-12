@@ -1,6 +1,7 @@
 // 初期化
 var manifestData = chrome.runtime.getManifest();
 var saveSettings = {};
+version_footer.textContent = manifestData.version;
 
 // 移行処理（移行チェック）
 function ConvertVariableCheck() {

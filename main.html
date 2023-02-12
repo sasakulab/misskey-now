@@ -10,11 +10,12 @@
     <link rel="stylesheet" href="./assets/bootstrap.min.css">
     <script src="./assets/bootstrap.min.js"></script>
 </head>
+
 <body class="px-3 py-3">
     <script defer src="main.js"></script>
     <div id="intro" class="py-3 text-center">
         <img src="./assets/96x96.png" alt="">
-        <h1>Misskey-Now</h1>
+        <h1>Misskey Now</h1>
     </div>
     <div id="input" class="">
         <div class="input-group input-group-sm mb-2">
@@ -59,30 +60,35 @@
         <hr>
         <div class="accordion" id="accordionExample">
             <div class="accordion-item">
-              <h2 class="accordion-header" id="headingSettings">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Settings" aria-expanded="false" aria-controls="Settings">
-                  Settings
-                </button>
-              </h2>
-              <div id="Settings" class="accordion-collapse collapse" aria-labelledby="headingSettings" data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-                    <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text">Profile Name</span>
-                        <input type="text" class="form-control" id="settings_profile_name">
+                <h2 class="accordion-header" id="headingSettings">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Settings"
+                        aria-expanded="false" aria-controls="Settings">
+                        Settings
+                    </button>
+                </h2>
+                <div id="Settings" class="accordion-collapse collapse" aria-labelledby="headingSettings"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="input-group input-group-sm mb-1">
+                            <span class="input-group-text">Profile Name</span>
+                            <input type="text" class="form-control" id="settings_profile_name">
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                            <span class="input-group-text">Host</span>
+                            <input type="text" class="form-control" id="settings_host">
+                        </div>
+                        <div class="input-group input-group-sm mb-1">
+                            <span class="input-group-text">API Key</span>
+                            <input type="password" class="form-control" id="settings_api_key">
+                        </div>
+                        <button class="btn-sm btn-primary w-100 btn-save mb-1" id="save_settings">Save Settings</button>
+                        <button class="btn-sm btn-danger w-100 btn-delete mb-1">Delete Profile</button>
                     </div>
-                    <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text">Host</span>
-                        <input type="text" class="form-control" id="settings_host">
-                    </div>
-                    <div class="input-group input-group-sm mb-1">
-                        <span class="input-group-text">API Key</span>
-                        <input type="password" class="form-control" id="settings_api_key">
-                    </div>
-                    <button class="btn-sm btn-primary w-100 btn-save mb-1" id="save_settings">Save Settings</button>
-                    <button class="btn-sm btn-danger w-100 btn-delete mb-1">Delete Profile</button>
                 </div>
-              </div>
             </div>
+        </div>
+        <div id="footer" class="text-center text-muted p-1" style="font-size: x-small;">
+            <p>v<a id="version_footer">0.2.0</a> / (C) 2023 Sasakulab / MIT LICENSE</p>
         </div>
     </div>
 </body>
