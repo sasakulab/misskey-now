@@ -4,7 +4,7 @@ var saveSettings = {};
 version_footer.textContent = manifestData.version;
 
 // 移行処理（移行チェック）
-function ConvertVariableCheck() {
+async function ConvertVariableCheck() {
     chrome.storage.local.get(['version', 'instance', 'key']).then((results) => {
         (version = results.version),
             (instance = results.instance),
@@ -52,7 +52,7 @@ function ConvertVariableCheck() {
 
 // 動作変数設定
 function reloadSaveData() {
-    chrome.storage.local.get(['profiles']).then((results) => {
+    chrome.storage.local.get(['profiles', 'version']).then((results) => {
         saveSettings = results.profiles;
         console.log('Misskey Now: Read Profiles Successfully');
     });
@@ -227,8 +227,8 @@ function handleCtrlEnter(e) {
         document.querySelector('.btn-send')?.click();
 }
 
-reloadSaveData();
 ConvertVariableCheck();
+reloadSaveData();
 
 // イベントリスナーの動作
 document.addEventListener('DOMContentLoaded', function () {
