@@ -5,7 +5,11 @@ version_footer.textContent = manifestData.version;
 
 // 移行処理（移行チェック）
 async function ConvertVariableCheck() {
-    const results = await chrome.storage.local.get(['version', 'instance', 'key']);
+    const results = await chrome.storage.local.get([
+        'version',
+        'instance',
+        'key',
+    ]);
     const { version, instance, key } = results;
 
     if (version == '0.2.0') {
@@ -49,7 +53,7 @@ async function reloadSaveData() {
 
 // タブから URL, タイトルの取得
 async function getUrl() {
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     const url = tabs[0].url;
     const title = tabs[0].title;
     popup_title.value = title;
@@ -90,12 +94,12 @@ async function generateNote() {
         visibility: range,
         text: strings,
     };
-    str = JSON.stringify(data);   
+    str = JSON.stringify(data);
     try {
         const response = await fetch(host, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: str,
         });
@@ -135,10 +139,7 @@ async function saveSetting() {
     const prevText = save_settings.textContent;
     const prevClass = save_settings.className;
     save_settings.textContent = '✓';
-    save_settings.className = prevClass.replace(
-        'btn-primary',
-        'btn-success'
-    );
+    save_settings.className = prevClass.replace('btn-primary', 'btn-success');
     setTimeout(() => {
         save_settings.textContent = prevText;
         save_settings.className = prevClass;
@@ -186,7 +187,7 @@ async function removeProfile() {
         version: manifestData.version,
         profiles: saveSettings,
     };
-    await chrome.storage.local.set(settings)
+    await chrome.storage.local.set(settings);
     console.log('Misskey-Now: Stored New Settings.');
     settings_profile_name.value = '';
     settings_host.value = '';
@@ -208,16 +209,15 @@ function handleCtrlEnter(e) {
         document.querySelector('.btn-send')?.click();
 }
 
-async function reloadInternalProfiles(){
+async function reloadInternalProfiles() {
     await ConvertVariableCheck();
     await reloadSaveData();
     displayProfiles();
 }
 
-
 // イベントリスナーの動作
 document.addEventListener('DOMContentLoaded', async function () {
-    await reloadInternalProfiles()
+    await reloadInternalProfiles();
     await getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
     document.querySelector('.btn-save').addEventListener('click', saveSetting);
