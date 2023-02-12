@@ -131,21 +131,20 @@ async function saveSetting() {
         version: manifestData.version,
         profiles: saveSettings,
     };
-    await chrome.storage.local.set(settings, function () {
-        console.log('Misskey-Now: Stored New Settings.');
-        const prevText = save_settings.textContent;
-        const prevClass = save_settings.className;
-        save_settings.textContent = '✓';
-        save_settings.className = prevClass.replace(
-            'btn-primary',
-            'btn-success'
-        );
-        setTimeout(() => {
-            save_settings.textContent = prevText;
-            save_settings.className = prevClass;
-        }, 1500);
-        displayProfiles();
-    });
+    await chrome.storage.local.set(settings);
+    console.log('Misskey-Now: Stored New Settings.');
+    const prevText = save_settings.textContent;
+    const prevClass = save_settings.className;
+    save_settings.textContent = '✓';
+    save_settings.className = prevClass.replace(
+        'btn-primary',
+        'btn-success'
+    );
+    setTimeout(() => {
+        save_settings.textContent = prevText;
+        save_settings.className = prevClass;
+    }, 1500);
+    displayProfiles();
 }
 
 // プロファイルの選択肢を変更したときに、下部（設定）の表示を更新
@@ -188,12 +187,11 @@ function removeProfile() {
         version: manifestData.version,
         profiles: saveSettings,
     };
-    chrome.storage.local.set(settings, function () {
-        console.log('Misskey-Now: Stored New Settings.');
-        settings_profile_name.value = '';
-        settings_host.value = '';
-        settings_api_key.value = '';
-    });
+    chrome.storage.local.set(settings)
+    console.log('Misskey-Now: Stored New Settings.');
+    settings_profile_name.value = '';
+    settings_host.value = '';
+    settings_api_key.value = '';
 }
 
 // 子要素の削除
