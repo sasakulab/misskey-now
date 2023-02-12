@@ -5,7 +5,7 @@ version_footer.textContent = manifestData.version;
 
 // 移行処理（移行チェック）
 async function ConvertVariableCheck() {
-    await chrome.storage.local.get(['version', 'instance', 'key']).then((results) => {
+    await chrome.storage.local.get(['version', 'instance', 'key']).then(async (results) => {
             (version = results.version),
             (instance = results.instance),
             (key = results.key);
@@ -31,7 +31,7 @@ async function ConvertVariableCheck() {
             console.log(
                 'Misskey Now: Thank you for Updating Misskey Now! Replace your Configuration.'
             );
-            chrome.storage.local.get(['instance', 'key']).then((results) => {
+            await chrome.storage.local.get(['instance', 'key']).then((results) => {
                 saveSettings = {};
                 saveSettings['PreviousVersionData'] = {
                     instance: results.instance,
@@ -132,7 +132,7 @@ function generateNote() {
 }
 
 // 設定の保存
-function saveSetting() {
+async function saveSetting() {
     profileName = settings_profile_name.value;
     if (popup_profile.value !== 'new') {
         delete saveSettings[[popup_profile.value]];
@@ -147,7 +147,7 @@ function saveSetting() {
         version: manifestData.version,
         profiles: saveSettings,
     };
-    chrome.storage.local.set(settings, function () {
+    await chrome.storage.local.set(settings, function () {
         console.log('Misskey-Now: Stored New Settings.');
         const prevText = save_settings.textContent;
         const prevClass = save_settings.className;
