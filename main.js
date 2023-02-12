@@ -227,8 +227,12 @@ function handleCtrlEnter(e) {
         document.querySelector('.btn-send')?.click();
 }
 
-ConvertVariableCheck();
-reloadSaveData();
+async function reloadInternalProfiles(){
+    await ConvertVariableCheck();
+    await reloadSaveData();
+}
+
+reloadInternalProfiles()
 
 // イベントリスナーの動作
 document.addEventListener('DOMContentLoaded', function () {
