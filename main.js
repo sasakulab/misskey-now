@@ -214,6 +214,7 @@ function handleCtrlEnter(e) {
 async function reloadInternalProfiles(){
     await ConvertVariableCheck();
     await reloadSaveData();
+    displayProfiles();
 }
 
 reloadInternalProfiles()
