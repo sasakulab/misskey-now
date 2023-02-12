@@ -177,7 +177,7 @@ function displayProfiles() {
 }
 
 // プロファイルの削除
-function removeProfile() {
+async function removeProfile() {
     if (popup_profile.value !== 'new') {
         console.log('debug');
         delete saveSettings[[popup_profile.value]];
@@ -186,7 +186,7 @@ function removeProfile() {
         version: manifestData.version,
         profiles: saveSettings,
     };
-    chrome.storage.local.set(settings)
+    await chrome.storage.local.set(settings)
     console.log('Misskey-Now: Stored New Settings.');
     settings_profile_name.value = '';
     settings_host.value = '';
