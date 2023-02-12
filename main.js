@@ -6,7 +6,6 @@ version_footer.textContent = manifestData.version;
 // 移行処理（移行チェック）
 async function ConvertVariableCheck() {
     await chrome.storage.local.get(['version', 'instance', 'key']).then((results) => {
-            console.log(results)
             (version = results.version),
             (instance = results.instance),
             (key = results.key);
