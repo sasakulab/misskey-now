@@ -225,4 +225,5 @@ document.addEventListener('DOMContentLoaded', function () {
         .querySelector('.btn-delete')
         .addEventListener('click', removeProfile);
     popup_profile.addEventListener('change', changeProfile);
+    popup_note.addEventListener('keydown', handleCtrlEnter);
 });
