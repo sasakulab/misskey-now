@@ -48,13 +48,12 @@ async function reloadSaveData() {
 }
 
 // タブから URL, タイトルの取得
-function getUrl() {
-    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        const url = tabs[0].url;
-        const title = tabs[0].title;
-        popup_title.value = title;
-        popup_url.value = url;
-    });
+async function getUrl() {
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
+    const url = tabs[0].url;
+    const title = tabs[0].title;
+    popup_title.value = title;
+    popup_url.value = url;
 }
 
 // ボタンのステータス変更 (@KusaReMKN さんのコードに統一予定（関数化）)
