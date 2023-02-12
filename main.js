@@ -5,49 +5,39 @@ version_footer.textContent = manifestData.version;
 
 // 移行処理（移行チェック）
 async function ConvertVariableCheck() {
-    await chrome.storage.local.get(['version', 'instance', 'key']).then(async (results) => {
-            (version = results.version),
-            (instance = results.instance),
-            (key = results.key);
+    const results = await chrome.storage.local.get(['version', 'instance', 'key']);
+    const { version, instance, key } = results;
 
-        if (version == '0.2.0') {
-            console.log('Misskey Now: Settings have Already Updated!');
-            displayProfiles();
-        } else if (
-            typeof instance === 'undefined' &&
-            typeof key === 'undefined'
-        ) {
-            console.log(
-                'Misskey Now: Thank you for installing Misskey Now! Initialize Configuration.'
-            );
-            init = {
-                version: manifestData.version,
-                profiles: {},
-            };
-            await chrome.storage.local.set(init, function () {
-                console.log('Misskey Now: Saving Settings (First Startup).');
-            });
-        } else {
-            console.log(
-                'Misskey Now: Thank you for Updating Misskey Now! Replace your Configuration.'
-            );
-            await chrome.storage.local.get(['instance', 'key']).then((results) => {
-                saveSettings = {};
-                saveSettings['PreviousVersionData'] = {
-                    instance: results.instance,
-                    key: results.key,
-                };
-                return (settings = {
-                    version: manifestData.version,
-                    profiles: saveSettings,
-                });
-            }).then((settings) => {
-                chrome.storage.local.set(settings, function () {
-                    console.log('Misskey Now: Saving Settings (Replaced).');
-                });
-            });
-        }
-    });
+    if (version == '0.2.0') {
+        console.log('Misskey Now: Settings have Already Updated!');
+        displayProfiles();
+    } else if (typeof instance === 'undefined' && typeof key === 'undefined') {
+        consoe.log(
+            'Misskey Now: Thank you for installing Misskey Now! Initialize Configuration.'
+        );
+        const init = {
+            version: manifestData.version,
+            profiles: {},
+        };
+        await chrome.storage.local.set(init);
+        console.log('Misskey Now: Saving Settings (First Startup).');
+    } else {
+        console.log(
+            'Misskey Now: Thank you for Updating Misskey Now! Replace your Configuration.'
+        );
+        const results = await chrome.storage.local.get(['instance', 'key']);
+        saveSettings = {};
+        saveSettings['PreviousVersionData'] = {
+            instance: results.instance,
+            key: results.key,
+        };
+        const settings = {
+            version: manifestData.version,
+            profiles: saveSettings,
+        };
+        await chrome.storage.local.set(settings);
+        console.log('Misskey Now: Saving Settings (Replaced).');
+    }
 }
 
 // 動作変数設定
