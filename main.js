@@ -88,7 +88,6 @@ async function generateNote() {
     const host = 'https://' + settings_host.value + '/api/notes/create';
     const apiKey = settings_api_key.value;
     strings = note + '\n\n' + '『' + title + '』 - ' + url + ' ' + hash;
-    console.log(strings);
     let data = {
         i: apiKey,
         visibility: range,
@@ -111,7 +110,6 @@ async function generateNote() {
             buttonstatus('success');
         }
         response.text();
-        console.log(data);
     } catch (e) {
         console.error('Misskey-now: Internal Error! : ' + e);
         buttonstatus('abort');
@@ -184,7 +182,6 @@ function displayProfiles() {
 // プロファイルの削除
 async function removeProfile() {
     if (popup_profile.value !== 'new') {
-        console.log('debug');
         delete saveSettings[[popup_profile.value]];
     }
     settings = {
