@@ -52,7 +52,7 @@ Misskey-Now を表示し、
 
 ```sh
 cd path/to/misskey-now/
-zip -r -FS ../misskey-now.zip * --exclude '*.git* README.md *img*'
+zip -r -FS ../misskey-now.zip * --exclude '*.git*' 'README.md' '*img*'
 ```
 
 ## Contributor
