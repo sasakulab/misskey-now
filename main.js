@@ -1,7 +1,6 @@
 // 初期化
 var manifestData = chrome.runtime.getManifest();
 var saveSettings = {};
-version_footer.textContent = manifestData.version;
 
 // 移行処理（移行チェック）
 async function ConvertVariableCheck() {
@@ -224,6 +223,7 @@ async function reloadInternalProfiles() {
 
 // イベントリスナーの動作
 document.addEventListener('DOMContentLoaded', async function () {
+    version_footer.textContent = manifestData.version;
     await reloadInternalProfiles();
     await getUrl();
     document.querySelector('.btn-send').addEventListener('click', generateNote);
