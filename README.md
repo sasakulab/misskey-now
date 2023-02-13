@@ -48,6 +48,13 @@ Misskey-Now を表示し、
 
 [#nowwatching なウェブサイトを Misskey へ簡単に投稿する “Misskey Now” を開発しました](https://blog.sasakulab.com/tools/misskey-now)
 
+## 審査用ファイルの生成
+
+```sh
+cd path/to/misskey-now/
+zip -r -FS ../misskey-now.zip * --exclude '*.git* README.md *img*'
+```
+
 ## Contributor
 
 この場を借りて厚く御礼申し上げます。
