@@ -191,10 +191,16 @@ async function removeProfile() {
         profiles: saveSettings,
     };
     await chrome.storage.local.set(settings);
-    console.log('Misskey-Now: Stored New Settings.');
+    displayProfiles()
+    console.log('Misskey-Now: Stored Removed Settings.');
     settings_profile_name.value = '';
     settings_host.value = '';
     settings_api_key.value = '';
+    const prevText = delete_settings.textContent;
+    delete_settings.textContent = '✓';
+    setTimeout(() => {
+        delete_settings.textContent = prevText;
+    }, 1500);
 }
 
 // 子要素の削除
