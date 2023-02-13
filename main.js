@@ -175,8 +175,8 @@ function displayProfiles() {
         option.value = profile;
         popup_profile.appendChild(option);
     });
-    if(typeof popup_profile.options[1] !== 'undefined'){
-        popup_profile.options[1].setAttribute("selected", "selected")
+    if (typeof popup_profile.options[1] !== 'undefined') {
+        popup_profile.options[1].setAttribute('selected', 'selected');
     }
 }
 
@@ -191,7 +191,7 @@ async function removeProfile() {
         profiles: saveSettings,
     };
     await chrome.storage.local.set(settings);
-    displayProfiles()
+    displayProfiles();
     console.log('Misskey-Now: Stored Removed Settings.');
     settings_profile_name.value = '';
     settings_host.value = '';
