@@ -66,14 +66,22 @@ function buttonstatus(mode) {
         document.querySelector('.btn-send').className =
             'btn-sm w-100 btn-send btn-primary';
         document.querySelector('.btn-send').textContent = 'Misskey Now!';
+        document.querySelector('.btn-send').disabled = false;
     } else if (mode == 'success') {
         document.querySelector('.btn-send').className =
             'btn-sm w-100 btn-send btn-success';
         document.querySelector('.btn-send').textContent = 'Success';
+        document.querySelector('.btn-send').disabled = false;
     } else if (mode == 'abort') {
         document.querySelector('.btn-send').className =
             'btn-sm w-100 btn-send btn-danger';
         document.querySelector('.btn-send').textContent = 'Error';
+        document.querySelector('.btn-send').disabled = false;
+    } else if (mode == 'sending') {
+        document.querySelector('.btn-send').className =
+            'btn-sm w-100 btn-send btn-secondary';
+        document.querySelector('.btn-send').textContent = 'Sending...';
+        document.querySelector('.btn-send').disabled = true;
     }
 }
 
@@ -93,6 +101,7 @@ async function generateNote() {
         text: strings,
     };
     str = JSON.stringify(data);
+    buttonstatus('sending');
     try {
         const response = await fetch(host, {
             method: 'POST',
