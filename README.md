@@ -1,8 +1,8 @@
-# Misskey-Now
+# Misskey Now
 
 <p align="center">
 <img src="https://github.com/sasakulab/misskey-now/raw/main/assets/96x96.png"
-	alt="Misskey-Now" width="96" height="96" />
+	alt="Misskey Now" width="96" height="96" />
 </p>
 
 ## これはなに
@@ -32,7 +32,7 @@ Misskey のアクセストークンが必要です。
 
 ### 2. アクセストークンの設定
 
-Misskey-Now を表示し、
+Misskey Now を表示し、
 **Settings** を開いて表示される **API Key** の入力欄にトークンを貼り付けます。
 **Host** の欄には所属しているインスタンスのホスト名
 (misskey.io や misskey.dev など) を入力します。
