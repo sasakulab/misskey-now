@@ -57,6 +57,9 @@ async function getUrl() {
     const title = tabs[0].title;
     popup_title.value = title;
     popup_url.value = url;
+    if (enableShindan == true) {
+        getShindanResult()
+    }
 }
 
 // ボタンのステータス変更 (@KusaReMKN さんのコードに統一予定（関数化）)
@@ -185,7 +188,7 @@ function displayProfiles() {
     });
     if (typeof popup_profile.options[1] !== 'undefined') {
         popup_profile.options[1].setAttribute('selected', 'selected');
-        changeProfile()
+        changeProfile();
     }
 }
 
@@ -245,3 +248,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     popup_profile.addEventListener('change', changeProfile);
     popup_note.addEventListener('keydown', handleCtrlEnter);
 });
+
+async function getShindanResult() {
+    const tab = await chrome.tabs.query({ active: true, currentWindow: true })[0];
+    const url = new URL(tab.url) 
+    if (url.hostname == 'shindanmaker.com' &&
+        typeof document.getElementById('copy-textarea-140') != 'undefined'
+    ) {
+        popup_note.value = document.getElementById('copy-text-area-140');
+    } else {
+        popup_note.value = ''
+    }
+}
